@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Points</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* Changed flex direction to column */
+            align-items: center; /* Center content horizontally */
+            justify-content: center;
+            height: 100vh;
+            margin-top: 1%;
+            background-color: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            padding: 1em;
+            overflow-y: scroll;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Permanent Marker', cursive;
+            font-size: 300%; /* increased font size */
+            margin-bottom: 2em; /* added some margin for spacing */
+            background: linear-gradient(to top left, rgb(160, 2, 2), #e52424); /* Applied red gradient */
+            background-clip: text;
+            -webkit-background-clip: text; /* Apply gradient as text color */
+            -webkit-text-fill-color: transparent; /* Hide actual text color */
+        }
+
+        #userList {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-card {
+            border-radius: 1em;
+            padding: 1em;
+            margin: 1em;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+            width: calc(var(--scale) * 0.5);
+            /* Adjusted width */
+            max-width: 100%;
+            /* Maximum width */
+            position: relative;
+            color: #fff;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .gold-card {
+            background-color: hsl(51, 70%, 30%);
+            color: gold;
+            text-shadow: 1px 1px 20px gold;
+            /* Changed font color */
+            --scale: 150%;
+        }
+
+        .silver-card {
+            background-color: hsl(0, 0%, 45%);
+            color: silver;
+            text-shadow: 1px 1px 10px silver;
+            /* Changed font color */
+            --scale: 133%;
+        }
+
+        .bronze-card {
+            background-color: hsl(28, 73%, 17%);
+            color: rgb(173, 89, 16);
+            text-shadow: 1px 1px 5px rgb(173, 89, 16);
+            /* Changed font color */
+            --scale: 125%;
+        }
+
+        .normal-card {
+            background-color: #444;
+            font-size: 1em;
+            --scale: 100%;
+        }
+
+        .user-card img {
+            width: 5em;
+            height: 5em;
+            border-radius: 50%;
+            margin-right: 1em;
+        }
+
+        .user-details {
+            font-size: var(--scale);
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            /* Pushes points to rightmost edge */
+            flex-grow: 1;
+            /* Allows the details to take up remaining space */
+            align-items: center;
+        }
+
+        .user-number {
+            font-size: calc(var(--scale) * 1.5);
+            font-weight: bold;
+            margin-right: 0.5em;
+        }
+
+        .user-card p {
+            margin: 0.5em;
+        }
+
+        .user-name {
+            font-weight: bold;
+            font-size: var(--scale);
+            margin-right: 1em;
+        }
+
+        .user-points {
+            margin-top: auto;
+            margin-left: auto;
+            font-size: var(--scale);
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 200px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            padding: 1em;
+            z-index: 1;
+            border-radius: 5px;
+            text-align: left;
+            top: 60px;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">THE KARE POINTS LIST</div>
+    <div id="userList"></div>
+
+    <script>
+        // Function to generate random points attribution
+        function generatePoints() {
+            const points = [];
+            const numPoints = Math.floor(Math.random() * 3) + 1; // Generates 1 to 3 points
+            for (let i = 0; i < numPoints; i++) {
+                const date = new Date().toLocaleDateString();
+                const reason = "Reason " + (i + 1);
+                const value = Math.floor(Math.random() * 100) + 1; // Random points value
+                points.push(`${date} | +${value} Kare Points | ${reason}`);
+            }
+            return points;
+        }
+
+        // Function to generate user cards
+        function generateUserCards() {
+            const userList = document.getElementById('userList');
+            for (let i = 1; i <= 10; i++) {
+                const userCard = document.createElement('div');
+                userCard.classList.add('user-card');
+                if (i === 1) {
+                    userCard.classList.add('gold-card');
+                } else if (i === 2) {
+                    userCard.classList.add('silver-card');
+                } else if (i === 3) {
+                    userCard.classList.add('bronze-card');
+                } else {
+                    userCard.classList.add('normal-card');
+                }
+                userCard.innerHTML = `
+                    <div class="user-number">#${i}</div>
+                    <img src="test.png" alt="User ${i}">
+                    <div class="user-details">
+                        <p class="user-name">Kare</p>
+                        <p class="user-points"><b>${Math.floor((10 - i) * 100 + Math.random() * 100)}</b> Kare Points</p>
+                    </div>
+                    <div class="dropdown">
+                        ${generatePoints().join('<br>')}
+                    </div>
+                `;
+                userList.appendChild(userCard);
+            }
+        }
+
+        // Generate user cards when the page loads
+        window.onload = function () {
+            generateUserCards();
+        };
+    </script>
+</body>
+
+</html>
